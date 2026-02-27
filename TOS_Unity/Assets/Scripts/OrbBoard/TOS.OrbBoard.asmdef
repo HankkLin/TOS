@@ -1,7 +1,7 @@
 {
     "name": "TOS.OrbBoard",
     "rootNamespace": "TOS.OrbBoard",
-    "references": ["TOS.Core"],
+    "references": ["TOS.Core", "TOS.Infrastructure"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

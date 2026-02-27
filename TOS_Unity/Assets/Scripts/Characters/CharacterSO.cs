@@ -42,11 +42,10 @@ namespace TOS.Characters
         public int maxRCV = 500;
         public int maxSPD = 150;
 
-        [Header("Skill References")]
-        public SkillSO leaderSkill;
-        public SkillSO activeSkill;
-        public SkillSO passiveSkill;     // Unlocked at player Lv31
-        public SkillSO exceedSkill;      // Unlocked at player Lv61
+        [Header("Skill References — Orb Echo System")]
+        public OrbEchoSkillSO orbEchoSkills;     // 3-chain / 5-chain / 7+-chain skills
+        public PassiveTraitSO passiveTrait;       // Unique passive ability
+        public DivinityBurstSO divinityBurst;     // G-Mode ultimate
 
         [Header("Visuals")]
         public Sprite portrait;

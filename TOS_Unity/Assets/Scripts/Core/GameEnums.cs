@@ -77,28 +77,40 @@ namespace TOS.Core
     }
 
     /// <summary>
-    /// Orb board state machine states.
-    /// GDD: 04_technical_architecture.md §C.3
+    /// Orb board state machine states — Orb Echo flow.
+    /// GDD: 01_combat_system.md v2.0 §2
     /// </summary>
     public enum BoardState
     {
-        Idle,           // Waiting for player input
-        PlayerInput,    // Player is dragging an orb
-        Calculating,    // Finding matches after drag ends
-        Eliminating,    // Playing elimination animations
-        Refilling,      // Dropping remaining orbs + spawning new ones
-        ChainCheck      // Checking for cascade combos after refill
+        Idle,           // Waiting for player to start a chain
+        ChainInput,     // Player is connecting same-color orbs
+        Resolving,      // Evaluating chain length → trigger Orb Echo skill
+        Eliminating,    // Playing elimination + skill animations
+        Skyfall,        // Dropping/filling new orbs (gravity-aware)
+        ChainCheck      // Checking for cascade combos after skyfall
     }
 
     /// <summary>
-    /// Battle phase in the hybrid turn system.
-    /// GDD: 01_combat_system.md §3.3
+    /// Battle phase in the turn system.
+    /// GDD: 01_combat_system.md v2.0 §5.1
     /// </summary>
     public enum BattlePhase
     {
-        PlayerTurn,     // Strategic planning + orb manipulation (time frozen)
-        Execution,      // Attacks resolve in real-time (3s)
-        EnemyPhase      // Enemy actions + 2s player reaction window
+        PlayerPhase,    // Player uses 3 AP to make chain connections
+        Resolution,     // Orb Echo skills animate and resolve in sequence
+        EnemyPhase      // Enemy attacks + environment mechanics trigger
+    }
+
+    /// <summary>
+    /// Chain length classification for Orb Echo.
+    /// GDD: 01_combat_system.md v2.0 §2.2
+    /// </summary>
+    public enum ChainLength
+    {
+        None,           // < 3 connections (invalid)
+        Basic,          // 3 connections → basic Orb Echo skill (1 AP)
+        Enhanced,       // 5 connections → enhanced Orb Echo skill (2 AP)
+        Ultimate        // 7+ connections → combined basic+enhanced+extra (3 AP)
     }
 
     /// <summary>
@@ -114,16 +126,14 @@ namespace TOS.Core
     }
 
     /// <summary>
-    /// Match pattern types detected during orb elimination.
-    /// GDD: 01_combat_system.md §2.2
+    /// Orb Echo skill trigger type — per-character unique.
+    /// GDD: 01_combat_system.md v2.0 §3.1
     /// </summary>
-    public enum MatchPattern
+    public enum OrbEchoTier
     {
-        ThreeMatch,     // 3 orbs — single target attack
-        FourMatch,      // 4 orbs — small AOE (2×2)
-        FiveMatch,      // 5+ orbs — full party attack + enhanced orb
-        CrossMatch,     // Cross shape — cross AOE + penetrate
-        LTMatch         // L or T shape — fan attack
+        BasicEcho,      // 3-chain triggers character's basic echo skill
+        EnhancedEcho,   // 5-chain triggers character's enhanced echo skill
+        UltimateEcho    // 7+-chain triggers basic + enhanced + extra
     }
 
     /// <summary>
