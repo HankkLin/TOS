@@ -1,13 +1,13 @@
 // ============================================================
-// GameConstants.cs — Game-wide constants and balance values
-// GDD Source: 01_combat_system.md §2-3, 03_level_environment.md
+// GameConstants.cs — Game-wide constants and balance values v2.0
+// GDD Source: 01_combat_system.md v2.0
 // ============================================================
 
 namespace TOS.Core
 {
     /// <summary>
     /// Central repository for all game balance constants.
-    /// All values sourced from GDD with section references.
+    /// v2.0: Redesigned for Orb Echo + Divinity Burst mechanics.
     /// </summary>
     public static class GameConstants
     {
@@ -15,86 +15,82 @@ namespace TOS.Core
         public const int BOARD_ROWS = 5;
         public const int BOARD_COLS = 6;
         public const int TOTAL_CELLS = BOARD_ROWS * BOARD_COLS; // 30
-        public const int MIN_MATCH = 3;
 
-        // === Orb Drag Timer (seconds) — GDD §3.3 ===
-        public const float DRAG_TIME_CASUAL  = -1f; // Unlimited until drag starts
-        public const float DRAG_TIME_NORMAL  = 8f;
-        public const float DRAG_TIME_HARD    = 6f;
-        public const float DRAG_TIME_HELL    = 5f;
-        public const float DRAG_TIME_NIGHTMARE = 5f;
+        // === Orb Echo Chain Thresholds — GDD §2.2 ===
+        public const int CHAIN_BASIC = 3;       // 3 connected → basic echo
+        public const int CHAIN_ENHANCED = 5;    // 5 connected → enhanced echo
+        public const int CHAIN_ULTIMATE = 7;    // 7+ connected → ultimate echo
 
-        // === Phantom Trail Bonuses — GDD §2.2 ===
-        public const int TRAIL_BONUS_TIER1 = 15;   // cells visited
-        public const float TRAIL_BONUS_DMG1 = 0.20f; // +20% damage
-        public const float TRAIL_AWAKEN1 = 0.15f;    // +15% awakening gauge
+        // === Action Points — GDD §2.3 ===
+        public const int AP_PER_TURN = 3;
+        public const int AP_COST_BASIC = 1;     // 3-chain costs 1 AP
+        public const int AP_COST_ENHANCED = 2;  // 5-chain costs 2 AP
+        public const int AP_COST_ULTIMATE = 3;  // 7+-chain costs 3 AP
 
-        public const int TRAIL_BONUS_TIER2 = 25;
-        public const float TRAIL_BONUS_DMG2 = 0.40f;
-        public const float TRAIL_AWAKEN2 = 0.30f;
+        // === Combo Bonuses — GDD §2.4 ===
+        public const int COMBO_TIER1 = 2;
+        public const float COMBO_BONUS1 = 0.10f;  // +10% team damage
 
-        public const int TRAIL_BONUS_TIER3 = 30;   // full board
-        public const float TRAIL_BONUS_DMG3 = 0.60f;
-        public const float TRAIL_AWAKEN3 = 0.50f;
+        public const int COMBO_TIER2 = 3;
+        public const float COMBO_BONUS2 = 0.20f;  // +20% team damage
 
-        // === Combo Multipliers — GDD §2.3 ===
-        public const int COMBO_TIER1 = 5;
-        public const float COMBO_MULT1 = 1.5f;
+        public const int COMBO_TIER3 = 4;
+        public const float COMBO_BONUS3 = 0.30f;  // +30% + next turn +1 AP
+        public const int COMBO_TIER3_BONUS_AP = 1;
 
-        public const int COMBO_TIER2 = 8;
-        public const float COMBO_MULT2 = 2.0f;
+        // === Divinity Gauge — GDD §2.5 ===
+        public const float DIVINITY_GAUGE_MAX = 100f;
+        public const float DIVINITY_PER_BASIC_CHAIN = 5f;
+        public const float DIVINITY_PER_ENHANCED_CHAIN = 15f;
+        public const float DIVINITY_PER_ULTIMATE_CHAIN = 25f;
+        public const float DIVINITY_PER_SKYFALL_COMBO = 3f;
+        public const float DIVINITY_PER_ADVANTAGE_HIT = 5f;
+        // Damage taken: +(damagePercent × 10) — calculated dynamically
 
-        public const int COMBO_TIER3 = 10;
-        public const float COMBO_MULT3 = 2.5f;
-
-        public const int COMBO_EXCEED = 15;
-        public const float COMBO_EXCEED_MULT = 3.0f;
-        public const float COMBO_EXCEED_AWAKEN = 0.50f;
-        public const float COMBO_EXCEED_EXTRA_TIME = 3.0f;
-
-        // === Attribute Advantage — GDD §1.1 ===
+        // === Attribute Advantage — GDD §1.1 (unchanged) ===
         public const float ATTRIBUTE_ADVANTAGE = 1.5f;
         public const float ATTRIBUTE_DISADVANTAGE = 0.5f;
         public const float ATTRIBUTE_NEUTRAL = 1.0f;
 
-        // === Energy Mark Levels — GDD §2.2 ===
-        public const int ENERGY_MARK_MAX_LEVEL = 3;
-        public const float ENERGY_MARK_LV2_CRIT = 0.15f;  // +15% crit rate
+        // === Damage Formula — GDD §4.3 ===
+        // FinalDmg = ATK × SkillMult × AttrAdv × ComboBonus × PassiveBonus × EnvMod - DEF
+        public const float MIN_DAMAGE = 1f; // Minimum damage floor
 
-        // === Awakening Gauge ===
-        public const float AWAKENING_GAUGE_MAX = 100f;
+        // === Skill Multiplier Ranges — GDD §4.3 ===
+        public const float BASIC_ECHO_MULT_MIN = 1.0f;
+        public const float BASIC_ECHO_MULT_MAX = 1.5f;
+        public const float ENHANCED_ECHO_MULT_MIN = 2.5f;
+        public const float ENHANCED_ECHO_MULT_MAX = 4.0f;
+        public const float ULTIMATE_ECHO_MULT_MIN = 4.0f;
+        public const float ULTIMATE_ECHO_MULT_MAX = 6.0f;
+        public const float DIVINITY_BURST_MULT_MIN = 10.0f;
+        public const float DIVINITY_BURST_MULT_MAX = 20.0f;
 
-        // === Battle Timing — GDD §3.3 ===
-        public const float EXECUTION_PHASE_DURATION = 3.0f;
-        public const float ENEMY_PHASE_DURATION = 2.0f;
-        public const float COMBO_ANIMATION_PER_HIT = 0.3f;
+        // === Numerical Model — GDD §4.2 ===
+        // Character ATK range: 300(N) - 2000(SSR)
+        // Boss HP range: 500K - 10M
+        // Strict inflation control!
 
         // === Team ===
         public const int TEAM_SIZE = 5;
 
-        // === Skill CD Reduction — GDD §3.1 ===
-        public const int CD_REDUCE_HEART_ELIM = 1;          // Heart orb elimination → party CD-1
-        public const int CD_REDUCE_ELEMENT_5PLUS = 2;       // 5+ same element → that char CD-2
+        // === CD Acceleration — GDD §4.4 ===
+        public const int CD_ACCEL_COMBO_THRESHOLD = 10;  // Every 10 combos (cumulative)
+        public const int CD_ACCEL_AMOUNT = 1;             // Reduce all CDs by 1
 
-        // === Terrain Attribute Modifiers — GDD §3.2, 03_level_environment.md ===
-        public const float TERRAIN_ADVANTAGE_BONUS = 0.30f;    // +30%
-        public const float TERRAIN_DISADVANTAGE_PENALTY = 0.20f; // -20%
+        // === Soul Armament Tiers — GDD §4.5 ===
+        public const int SOUL_ARM_TIER1_FRAGMENTS = 10;
+        public const int SOUL_ARM_TIER2_FRAGMENTS = 30;
+        public const int SOUL_ARM_TIER3_FRAGMENTS = 60;
+        public const int SOUL_ARM_TIER4_FRAGMENTS = 100;
 
-        // === Height Combat — GDD 03_level_environment.md Map 1 ===
-        public const float HEIGHT_ADVANTAGE_BONUS = 0.20f;     // +20% dmg from above
-        public const float HEIGHT_DISADVANTAGE_PENALTY = 0.10f; // -10% dmg attacking upward
-        public const float HEIGHT_THRESHOLD_METERS = 5.0f;
+        // === Environment ===
+        public const float TERRAIN_ELEMENT_ORB_BOOST = 0.15f;  // +15% orb spawn rate on matching terrain
+        public const float HEIGHT_ADVANTAGE_BONUS = 0.20f;
+        public const float HEIGHT_DISADVANTAGE_PENALTY = 0.10f;
 
-        // === Fragment System — GDD §5.2 ===
-        public const int SSR_FRAGMENT_REQUIRED = 100;
-
-        // === Input ===
-        public const float MIN_DRAG_DISTANCE_PX = 10f;
-        public const float DRAG_CONFIRM_DELAY = 0.05f; // seconds
-
-        // === Difficulty Boss Multipliers — GDD 03_level_environment.md ===
+        // === Difficulty Boss Multipliers ===
         public static readonly float[] BOSS_HP_MULTIPLIER = { 1f, 2f, 4f, 6f };
         public static readonly float[] BOSS_ATK_MULTIPLIER = { 1f, 1.5f, 2.5f, 4f };
-        public static readonly int[] FIRST_CLEAR_COMBO_REQ = { 3, 5, 7, 10 };
     }
 }
