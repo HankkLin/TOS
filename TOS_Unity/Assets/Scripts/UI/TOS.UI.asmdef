@@ -1,0 +1,14 @@
+{
+    "name": "TOS.UI",
+    "rootNamespace": "TOS.UI",
+    "references": ["TOS.Core", "TOS.OrbBoard", "TOS.Combat", "TOS.Characters"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

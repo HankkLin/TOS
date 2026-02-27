@@ -1,0 +1,14 @@
+{
+    "name": "TOS.Narrative",
+    "rootNamespace": "TOS.Narrative",
+    "references": ["TOS.Core", "TOS.Characters"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
